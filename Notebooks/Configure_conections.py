@@ -20,4 +20,37 @@
 
 # COMMAND ----------
 
+display(dbutils.fs.ls("/mnt/data/Raw"))
+
+# COMMAND ----------
+
+dados_raw = spark.read.json("/mnt/data/Raw/")
+
+# COMMAND ----------
+
+display(dados_raw)
+
+# COMMAND ----------
+
+import pyspark.sql.functions as f
+dados_without_col = dados_raw.drop("imagens", "usuario")
+display(dados_without_col)
+
+# COMMAND ----------
+
+dados_without_col.printSchema()
+
+# COMMAND ----------
+
+dados_format = dados_without_col.withColumn("id", f.col("anuncio.id"))
+display(dados_format)
+
+# COMMAND ----------
+
+dados_format.write.format("parquet")\
+    .mode("overwrite")\
+    .save("/mnt/data/Bronze/")
+
+# COMMAND ----------
+
 
