@@ -3,7 +3,7 @@ import pyspark.sql.functions as f
 
 # COMMAND ----------
 
-dados_raw = spark.read.json("/mnt/data/Raw/")
+dados_raw = spark.read.json("/mnt/datalake/data/Imoveis/Raw/")
 dados_without_col = dados_raw.drop("imagens", "usuario")
 display(dados_without_col)
 
@@ -21,4 +21,8 @@ display(dados_format)
 dados_format.write.format("parquet")\
     .mode("overwrite")\
     .save("/mnt/data/Bronze/")
+
+
+# COMMAND ----------
+
 
